@@ -1,10 +1,12 @@
 FROM php:8.2-apache
 
-# Устанавливаем необходимые расширения PHP
+# Устанавливаем необходимые зависимости и расширения PHP
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
-    && docker-php-ext-install zip
+    libgd-dev \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install zip gd
 
 # Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

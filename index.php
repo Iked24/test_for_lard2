@@ -1,3 +1,6 @@
+<?php
+session_start(); // Начинаем сессию в самом начале
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,21 +49,20 @@
     </style>
 </head>
 <body>
-<h1>Добавление пользователя</h1>
+<h1>User Excel Editor</h1>
 
 <form action="process.php" method="post">
     <div class="form-group">
         <label for="users">Enter users (JSON format):</label><br>
         <textarea name="users" id="users" placeholder='[{"id": 1, "name": "John", "age": 25}, ...]'></textarea>
     </div>
-    <button type="submit" class="button">Загрузить и обновить файл</button>
+    <button type="submit" class="button">Process and Generate Excel</button>
 </form>
 
 <?php
-session_start();
 if (isset($_SESSION['processed_data'])) {
     $data = $_SESSION['processed_data'];
-    echo "<h2>Ввелите данные:</h2>";
+    echo "<h2>Processed Data:</h2>";
     echo "<table>";
     echo "<tr><th>ID</th><th>Name</th><th>Age</th><th>Is Adult</th></tr>";
     foreach ($data as $user) {
@@ -72,11 +74,11 @@ if (isset($_SESSION['processed_data'])) {
         echo "</tr>";
     }
     echo "</table>";
-    echo '<p><a href="output/users.xlsx" class="button">Загрузка файла</a></p>';
+    echo '<p><a href="output/users.xlsx" class="button">Download Excel File</a></p>';
     unset($_SESSION['processed_data']); // Очищаем сессию после отображения
 }
 if (isset($_SESSION['error'])) {
-    echo "<p class='error'>Ошибка: {$_SESSION['error']}</p>";
+    echo "<p class='error'>Error: {$_SESSION['error']}</p>";
     unset($_SESSION['error']);
 }
 ?>
