@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # Порт хоста:порт контейнера
+    volumes:
+      - ./output:/var/www/html/output  # Монтируем папку output
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    depends_on:
+      - composer
+
+  composer:
+    image: composer:latest
+    volumes:
+      - .:/app
+    command: ["install", "--no-interaction"]
+    working_dir: /app
+
+volumes:
+  output:
